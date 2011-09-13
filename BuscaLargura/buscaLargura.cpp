@@ -14,7 +14,8 @@ class BuscaLargura{
 		void criaNoInicial();
 	public:
 		BuscaLargura();	
-		void Execute(Estado* aEstadoInicial,  Estado* aEstadoObjetivo);	
+		void Execute(Estado* aEstadoInicial,  Estado* aEstadoObjetivo);
+		Fronteira getFronteira();	
 };
 
 BuscaLargura::BuscaLargura(){
@@ -22,8 +23,8 @@ BuscaLargura::BuscaLargura(){
 }
 
 void BuscaLargura::criaNoInicial(){
-	Node* node;
-
+	Node* node;	
+	
 	node = new Node(
 		this->inicial->getMissionaryLeft(), 
 		this->inicial->getCannibalLeft(), 
@@ -39,8 +40,13 @@ void BuscaLargura::Execute(Estado* aEstadoInicial,  Estado* aEstadoObjetivo){
 	this->inicial = aEstadoInicial;
 	this->objetivo = aEstadoObjetivo;
 	this->criaNoInicial();	
-	this->fronteira.insertNode(this->raizArvore);
+	
+	this->fronteira.insertNode(this->raizArvore);	
 }
 
 void BuscaLargura::Expandir(Node* aNode){
+}
+
+Fronteira BuscaLargura::getFronteira(){
+	return this->fronteira;
 }

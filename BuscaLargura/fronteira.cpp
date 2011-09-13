@@ -46,8 +46,18 @@ void Fronteira::prior(){
 
 Node* Fronteira::getNode(){
 	std::list<Node*>::iterator elem;
-
-	elem = this->it;
-
-	return *elem;		
+	Node* nod;
+	
+	cout << "to no getnode. tamanho:" << this->fronteira.size() <<endl;
+	
+	elem = this->it;	
+	nod = *elem;
+	
+	if (nod==NULL){
+		cout << "esse caramba é null"<<endl;
+	}
+	
+	//cout << "ML:" << nod->getEstado().getMissionaryLeft() <<endl;
+	
+	//return *elem;		
 }

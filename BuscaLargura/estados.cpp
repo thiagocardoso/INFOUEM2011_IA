@@ -26,7 +26,8 @@ class Estado{
 		void setCannibalRight(int count);
 		void setMissionaryRight(int count);			
 		void setBoatLeft(int count);
-		void setBoatRight(int count);		
+		void setBoatRight(int count);	
+		void printInfo();	
 };
 
 class ListaEstado{
@@ -112,6 +113,21 @@ bool Estado::IsSame(Estado * aEstado){
 
 string Estado::AsString(){
 	//
+}
+
+void Estado::printInfo(){
+	cout << "ML:" << this->getMissionaryLeft();
+	cout << "CL:" << this->getCannibalLeft();
+	cout << "MR:" << this->getMissionaryRight();
+	cout << "CR:" << this->getCannibalRight();
+	if (this->HasBoatLeft()){		
+		cout << "BP: ESQ";
+	}else{
+		if (this->HasBoatRight()){
+			cout << "BP: DIR";
+		}
+	}
+	cout << endl;	
 }
 
 Estado* ListaEstado::getEstado(){

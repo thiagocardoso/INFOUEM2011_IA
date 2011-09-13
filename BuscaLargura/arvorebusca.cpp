@@ -17,7 +17,8 @@ class Node{
 		void priorChild();
 		Node* getParentNode();
 		Node* getChild();
-		void setParentNode(Node* parent);
+		void setParentNode(Node* parent);		
+		Estado getEstado();
 };
 
 Node::Node(int missionaryLeft, int cannibalLeft, int missionaryRight, 
@@ -66,4 +67,8 @@ Node* Node::getChild(){
 	elem = this->it;
 
 	return *elem;		
+}
+
+Estado Node::getEstado(){
+	return this->state;
 }
