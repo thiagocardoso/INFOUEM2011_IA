@@ -38,10 +38,10 @@ void BuscaLargura::criaNoInicial(){
 
 void BuscaLargura::Execute(Estado* aEstadoInicial,  Estado* aEstadoObjetivo){
 	this->inicial = aEstadoInicial;
-	this->objetivo = aEstadoObjetivo;
+	this->objetivo = aEstadoObjetivo;	
 	this->criaNoInicial();	
 	
-	this->fronteira.insertNode(this->raizArvore);	
+	this->fronteira.addNode(this->raizArvore);	
 }
 
 void BuscaLargura::Expandir(Node* aNode){

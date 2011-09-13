@@ -30,9 +30,8 @@ int main(){
 			if (bL.getFronteira().getNode()!=NULL){
 				cout << "Existe aqui tb"<<endl;
 			}
-			//bL.getFronteira().getNode()->getEstado().printInfo();
 			
-			bL.getFronteira().next();
+			bL.getFronteira().nextNode();
 		}
 		
 	}catch(...){
