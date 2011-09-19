@@ -27,9 +27,7 @@ int main(){
 		
 		bL.getFronteira().first();		
 		while(!bL.getFronteira().eof()){
-			if (bL.getFronteira().getNode()!=NULL){
-				cout << "Existe aqui tb"<<endl;
-			}
+			cout << "MR: " << bL.getFronteira().getNode()->getEstado().getMissionaryRight() <<endl;			
 			
 			bL.getFronteira().nextNode();
 		}

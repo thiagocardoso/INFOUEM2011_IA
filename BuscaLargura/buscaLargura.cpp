@@ -33,7 +33,7 @@ void BuscaLargura::criaNoInicial(){
 		this->inicial->getBoatLeft(),
 		this->inicial->getBoatRight()
 	);
-	this->raizArvore = node;
+	this->raizArvore = node;		
 }
 
 void BuscaLargura::Execute(Estado* aEstadoInicial,  Estado* aEstadoObjetivo){
