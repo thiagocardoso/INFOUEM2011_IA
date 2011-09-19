@@ -14,6 +14,7 @@ class Fronteira{
 		void last();
 		bool eof();
 		Node* getNode();
+		Node* RemovePrimeiro();
 		std::list<Node*>::iterator getIterator();
 };
 
@@ -60,4 +61,10 @@ Node* Fronteira::getNode(){
 	elem = this->it;
 	
 	return *elem;		
+}
+
+Node* Fronteira::RemovePrimeiro(){
+	Node* node = this->list.front();
+	this->list.pop_front();
+	return node;
 }

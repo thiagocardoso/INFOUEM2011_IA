@@ -10,12 +10,15 @@ class BuscaLargura{
 		Estado* inicial;
 		Estado* objetivo;
 	protected:
+		void ExpandirEsquerda(Node* aNode);
+		void ExpandirDireita(Node* aNode);
 		void Expandir(Node* aNode);		
 		void criaNoInicial();
 	public:
 		BuscaLargura();	
 		void Execute(Estado* aEstadoInicial,  Estado* aEstadoObjetivo);
-		Fronteira getFronteira();	
+		Fronteira* getFronteira();	
+		void ExpandeFronteira();
 };
 
 BuscaLargura::BuscaLargura(){
@@ -33,6 +36,9 @@ void BuscaLargura::criaNoInicial(){
 		this->inicial->getBoatLeft(),
 		this->inicial->getBoatRight()
 	);
+	
+	node->setParentNode(NULL);	
+	
 	this->raizArvore = node;		
 }
 
@@ -44,9 +50,152 @@ void BuscaLargura::Execute(Estado* aEstadoInicial,  Estado* aEstadoObjetivo){
 	this->fronteira.addNode(this->raizArvore);	
 }
 
-void BuscaLargura::Expandir(Node* aNode){
+void BuscaLargura::Expandir(Node* aNode){	
+	if(aNode->getEstado()->HasBoatLeft()){
+		this->ExpandirEsquerda(aNode);
+	}
+	
+	if(aNode->getEstado()->HasBoatRight()){
+		this->ExpandirDireita(aNode);
+	}
 }
 
-Fronteira BuscaLargura::getFronteira(){
-	return this->fronteira;
+Fronteira* BuscaLargura::getFronteira(){
+	return &this->fronteira;
+}
+
+void BuscaLargura::ExpandeFronteira(){		
+	this->Expandir(this->getFronteira()->RemovePrimeiro());
+}
+
+void BuscaLargura::ExpandirEsquerda(Node* aNode){
+	Node * node;
+	if(aNode->getEstado()->getMissionaryLeft()>=2){
+		node = new Node(aNode->getEstado()->getMissionaryLeft()-2,
+						aNode->getEstado()->getCannibalLeft(),
+						aNode->getEstado()->getMissionaryRight()+2,
+						aNode->getEstado()->getCannibalRight(),
+						aNode->getEstado()->getBoatLeft()-1,
+						aNode->getEstado()->getBoatRight()+1);
+						
+		node->setParentNode(aNode);
+		aNode->insertChild(node);
+		this->fronteira.addNode(node);
+	}
+	
+	if(aNode->getEstado()->getCannibalLeft()>=2){
+		node = new Node(aNode->getEstado()->getMissionaryLeft(),
+						aNode->getEstado()->getCannibalLeft()-2,
+						aNode->getEstado()->getMissionaryRight(),
+						aNode->getEstado()->getCannibalRight()+2,
+						aNode->getEstado()->getBoatLeft()-1,
+						aNode->getEstado()->getBoatRight()+1);
+						
+		node->setParentNode(aNode);
+		aNode->insertChild(node);
+		this->fronteira.addNode(node);
+	}		
+	
+	if(aNode->getEstado()->getMissionaryLeft()>=1){
+		if(aNode->getEstado()->getCannibalLeft()>=1){
+			node = new Node(aNode->getEstado()->getMissionaryLeft()-1,
+							aNode->getEstado()->getCannibalLeft()-1,
+							aNode->getEstado()->getMissionaryRight()+1,
+							aNode->getEstado()->getCannibalRight()+1,
+							aNode->getEstado()->getBoatLeft()-1,
+							aNode->getEstado()->getBoatRight()+1);											
+			node->setParentNode(aNode);
+			aNode->insertChild(node);
+			this->fronteira.addNode(node);								
+		}
+		
+		node = new Node(aNode->getEstado()->getMissionaryLeft()-1,
+						aNode->getEstado()->getCannibalLeft(),
+						aNode->getEstado()->getMissionaryRight()+1,
+						aNode->getEstado()->getCannibalRight(),
+						aNode->getEstado()->getBoatLeft()-1,
+						aNode->getEstado()->getBoatRight()+1);
+		
+		node->setParentNode(aNode);
+		aNode->insertChild(node);
+		this->fronteira.addNode(node);
+	}
+	
+	if(aNode->getEstado()->getCannibalLeft()>=1){
+		node = new Node(aNode->getEstado()->getMissionaryLeft(),
+						aNode->getEstado()->getCannibalLeft()-1,
+						aNode->getEstado()->getMissionaryRight(),
+						aNode->getEstado()->getCannibalRight()+1,
+						aNode->getEstado()->getBoatLeft()-1,
+						aNode->getEstado()->getBoatRight()+1);											
+		node->setParentNode(aNode);
+		aNode->insertChild(node);		
+		this->fronteira.addNode(node);								
+	}		
+}
+
+void BuscaLargura::ExpandirDireita(Node* aNode){
+	Node * node;
+	if(aNode->getEstado()->getMissionaryRight()>=2){
+		node = new Node(aNode->getEstado()->getMissionaryLeft()+2,
+						aNode->getEstado()->getCannibalLeft(),
+						aNode->getEstado()->getMissionaryRight()-2,
+						aNode->getEstado()->getCannibalRight(),
+						aNode->getEstado()->getBoatLeft()+1,
+						aNode->getEstado()->getBoatRight()-1);
+						
+		node->setParentNode(aNode);
+		aNode->insertChild(node);
+		this->fronteira.addNode(node);
+	}
+	
+	if(aNode->getEstado()->getCannibalRight()>=2){
+		node = new Node(aNode->getEstado()->getMissionaryLeft(),
+						aNode->getEstado()->getCannibalLeft()+2,
+						aNode->getEstado()->getMissionaryRight(),
+						aNode->getEstado()->getCannibalRight()-2,
+						aNode->getEstado()->getBoatLeft()+1,
+						aNode->getEstado()->getBoatRight()-1);
+						
+		node->setParentNode(aNode);
+		aNode->insertChild(node);
+		this->fronteira.addNode(node);
+	}		
+	
+	if(aNode->getEstado()->getMissionaryRight()>=1){
+		if(aNode->getEstado()->getCannibalRight()>=1){
+			node = new Node(aNode->getEstado()->getMissionaryLeft()+1,
+							aNode->getEstado()->getCannibalLeft()+1,
+							aNode->getEstado()->getMissionaryRight()-1,
+							aNode->getEstado()->getCannibalRight()-1,
+							aNode->getEstado()->getBoatLeft()+1,
+							aNode->getEstado()->getBoatRight()-1);											
+			node->setParentNode(aNode);
+			aNode->insertChild(node);
+			this->fronteira.addNode(node);								
+		}
+		
+		node = new Node(aNode->getEstado()->getMissionaryLeft()+1,
+						aNode->getEstado()->getCannibalLeft(),
+						aNode->getEstado()->getMissionaryRight()-1,
+						aNode->getEstado()->getCannibalRight(),
+						aNode->getEstado()->getBoatLeft()+1,
+						aNode->getEstado()->getBoatRight()-1);
+		
+		node->setParentNode(aNode);
+		aNode->insertChild(node);
+		this->fronteira.addNode(node);
+	}
+	
+	if(aNode->getEstado()->getCannibalRight()>=1){
+		node = new Node(aNode->getEstado()->getMissionaryLeft(),
+						aNode->getEstado()->getCannibalLeft()+1,
+						aNode->getEstado()->getMissionaryRight(),
+						aNode->getEstado()->getCannibalRight()-1,
+						aNode->getEstado()->getBoatLeft()+1,
+						aNode->getEstado()->getBoatRight()-1);											
+		node->setParentNode(aNode);
+		aNode->insertChild(node);		
+		this->fronteira.addNode(node);								
+	}	
 }

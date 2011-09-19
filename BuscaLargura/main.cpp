@@ -24,12 +24,14 @@ int main(){
 	
 	try{
 		bL.Execute(&inicial, &objetivo);
-		
-		bL.getFronteira().first();		
-		while(!bL.getFronteira().eof()){
-			cout << "MR: " << bL.getFronteira().getNode()->getEstado().getMissionaryRight() <<endl;			
+				
+		bL.ExpandeFronteira();				
+		bL.ExpandeFronteira();
+		bL.getFronteira()->first();		
+		while(!bL.getFronteira()->eof()){
+			bL.getFronteira()->getNode()->getEstado()->printInfo();			
 			
-			bL.getFronteira().nextNode();
+			bL.getFronteira()->nextNode();
 		}
 		
 	}catch(...){

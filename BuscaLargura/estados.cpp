@@ -75,7 +75,7 @@ int Estado::getCannibalLeft(){
 }
 
 int Estado::getMissionaryLeft(){
-	return this->missionaryRight;
+	return this->missionaryLeft;
 }
 
 int Estado::getCannibalRight(){
@@ -117,14 +117,14 @@ string Estado::AsString(){
 
 void Estado::printInfo(){
 	cout << "ML:" << this->getMissionaryLeft();
-	cout << "CL:" << this->getCannibalLeft();
-	cout << "MR:" << this->getMissionaryRight();
-	cout << "CR:" << this->getCannibalRight();
+	cout << " CL:" << this->getCannibalLeft();
+	cout << " MR:" << this->getMissionaryRight();
+	cout << " CR:" << this->getCannibalRight();
 	if (this->HasBoatLeft()){		
-		cout << "BP: ESQ";
+		cout << " BP:ESQ";
 	}else{
 		if (this->HasBoatRight()){
-			cout << "BP: DIR";
+			cout << " BP:DIR";
 		}
 	}
 	cout << endl;	
