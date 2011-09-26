@@ -13,6 +13,7 @@ class Fronteira{
 		void first();
 		void last();
 		bool eof();
+		bool isEmpty();
 		Node* getNode();
 		Node* RemovePrimeiro();
 		std::list<Node*>::iterator getIterator();
@@ -20,6 +21,10 @@ class Fronteira{
 
 Fronteira::Fronteira(){
 	this->first();
+}
+
+bool Fronteira::isEmpty(){
+	return this->list.size()==0;
 }
 
 void Fronteira::first(){

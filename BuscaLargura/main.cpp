@@ -23,16 +23,9 @@ int main(){
 	objetivo.setBoatRight(1);
 	
 	try{
-		bL.Execute(&inicial, &objetivo);
-				
-		bL.ExpandeFronteira();				
-		bL.ExpandeFronteira();
-		bL.getFronteira()->first();		
-		while(!bL.getFronteira()->eof()){
-			bL.getFronteira()->getNode()->getEstado()->printInfo();			
+		bL.Initialize(&inicial, &objetivo);
 			
-			bL.getFronteira()->nextNode();
-		}
+		bL.Execute();	
 		
 	}catch(...){
 		cout << "Erro na execução do aplicativo.";

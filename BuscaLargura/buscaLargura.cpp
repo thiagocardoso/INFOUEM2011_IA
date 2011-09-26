@@ -16,13 +16,32 @@ class BuscaLargura{
 		void criaNoInicial();
 	public:
 		BuscaLargura();	
-		void Execute(Estado* aEstadoInicial,  Estado* aEstadoObjetivo);
+		void Initialize(Estado* aEstadoInicial,  Estado* aEstadoObjetivo);
+		void Execute();
 		Fronteira* getFronteira();	
 		void ExpandeFronteira();
 };
 
 BuscaLargura::BuscaLargura(){
 	this->raizArvore = NULL;
+}
+
+void BuscaLargura::Execute(){
+	bool completed=false;
+	Estado* actual;	
+	
+	while((!this->getFronteira()->isEmpty())&&(!completed)){
+		this->ExpandeFronteira();
+		this->getFronteira()->first();
+		
+		actual = this->getFronteira()->getNode()->getEstado();
+		
+		completed = actual->IsSame(this->objetivo);		
+	}
+	
+	if (completed){
+		cout << "ACHOU!!";
+	}
 }
 
 void BuscaLargura::criaNoInicial(){
@@ -42,12 +61,14 @@ void BuscaLargura::criaNoInicial(){
 	this->raizArvore = node;		
 }
 
-void BuscaLargura::Execute(Estado* aEstadoInicial,  Estado* aEstadoObjetivo){
+void BuscaLargura::Initialize(Estado* aEstadoInicial,  Estado* aEstadoObjetivo){
 	this->inicial = aEstadoInicial;
 	this->objetivo = aEstadoObjetivo;	
 	this->criaNoInicial();	
 	
 	this->fronteira.addNode(this->raizArvore);	
+	
+	
 }
 
 void BuscaLargura::Expandir(Node* aNode){	
