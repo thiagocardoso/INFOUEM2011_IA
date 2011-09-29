@@ -8,6 +8,7 @@ class Fronteira{
 	public:
 		Fronteira();
 		void addNode(Node *value);
+		void RemoveNode(Node* value);
 		void nextNode();
 		void priorNode();
 		void first();
@@ -54,6 +55,10 @@ bool Fronteira::eof(){
 
 void Fronteira::addNode(Node *value){
 	this->list.push_back(value);
+}
+
+void Fronteira::RemoveNode(Node* value){
+	this->list.remove(value);
 }
 
 std::list<Node*>::iterator Fronteira::getIterator(){

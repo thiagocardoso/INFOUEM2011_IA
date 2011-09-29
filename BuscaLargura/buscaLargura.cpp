@@ -8,9 +8,9 @@ class BuscaLargura{
 	private:
 		Node* raizArvore;
 		Fronteira fronteira;
-		Estado* inicial;
-		Estado* objetivo;
 	protected:
+		Estado* inicial;
+		Estado* objetivo;	
 		void ExpandirEsquerda(Node* aNode);
 		void ExpandirDireita(Node* aNode);
 		void Expandir(Node* aNode);		
@@ -18,13 +18,13 @@ class BuscaLargura{
 		void Sucess(Node* aResult);
 		void ViagemParaEsquerda(Node* Parent, int Missionarios, int Canibais);
 		void ViagemParaDireita(Node* Parent, int Missionarios, int Canibais);
-		void Viagem(Node* Parent, int Missionarios, int Canibais, int BarcoEsquerda, int BarcoDireita);		
+		void Viagem(Node* Parent, int Missionarios, int Canibais, int BarcoEsquerda, int BarcoDireita);				
 	public:
 		BuscaLargura();	
 		void Initialize(Estado* aEstadoInicial,  Estado* aEstadoObjetivo);
-		void Execute();
+		virtual void Execute();
+		virtual void ExpandeFronteira();		
 		Fronteira* getFronteira();	
-		void ExpandeFronteira();
 };
 
 BuscaLargura::BuscaLargura(){
@@ -32,7 +32,14 @@ BuscaLargura::BuscaLargura(){
 }
 
 void BuscaLargura::Sucess(Node* aResult){
-	cout << "ACHOU!!";
+	//cout << "ACHOU!!";
+	Node* actual = aResult;
+	
+	while(actual!=NULL){
+		actual->getEstado()->printInfo();
+		
+		actual = actual->getParentNode();
+	}
 }
 
 void BuscaLargura::Execute(){
@@ -46,9 +53,9 @@ void BuscaLargura::Execute(){
 		
 		actual = this->getFronteira()->getNode();
 		
-		actual->getEstado()->printInfo();
+		//actual->getEstado()->printInfo();
 		
-		getchar();
+		//getchar();
 		completed = actual->getEstado()->IsSame(this->objetivo);		
 	}
 	
