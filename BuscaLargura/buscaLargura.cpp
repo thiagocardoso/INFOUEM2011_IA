@@ -48,7 +48,7 @@ void BuscaLargura::Execute(){
 		
 		actual->getEstado()->printInfo();
 		
-		//getchar();
+		getchar();
 		completed = actual->getEstado()->IsSame(this->objetivo);		
 	}
 	
@@ -102,7 +102,7 @@ void BuscaLargura::ExpandeFronteira(){
 
 void BuscaLargura::Viagem(Node* Parent, int Missionarios, int Canibais, int BarcoEsquerda, int BarcoDireita){
 	Node* node;
-	bool result=false;
+	bool result=true;
 	int missionariosLeft=Missionarios;
 	int missionariosRight=Missionarios;
 	int canibaisLeft=Canibais;
@@ -123,7 +123,13 @@ void BuscaLargura::Viagem(Node* Parent, int Missionarios, int Canibais, int Barc
 				Parent->getEstado()->getBoatLeft() + BarcoEsquerda,
 				Parent->getEstado()->getBoatRight() + BarcoDireita);	
 				
-	result = (!(node->getEstado()->getCannibalLeft() > node->getEstado()->getMissionaryLeft()))&&(!(node->getEstado()->getCannibalRight() > node->getEstado()->getMissionaryRight()));
+	if (node->getEstado()->getMissionaryLeft()>0){
+		result = result && (!(node->getEstado()->getCannibalLeft() > node->getEstado()->getMissionaryLeft()));
+	}
+	
+	if (node->getEstado()->getMissionaryRight()>0){
+		result = result && (!(node->getEstado()->getCannibalRight() > node->getEstado()->getMissionaryRight()));	
+	}	
 	
 	if (Parent->getParentNode()!=NULL){
 		result = result && (!node->getEstado()->IsSame(Parent->getParentNode()->getEstado()));
