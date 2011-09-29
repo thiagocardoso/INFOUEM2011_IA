@@ -54,7 +54,7 @@ void Node::priorChild(){
 }
 
 Node* Node::getParentNode(){
-	return &this->parentNode;
+	return this->parentNode;
 }
 
 void Node::setParentNode(Node* parent){

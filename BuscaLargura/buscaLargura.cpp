@@ -16,6 +16,9 @@ class BuscaLargura{
 		void Expandir(Node* aNode);		
 		void criaNoInicial();
 		void Sucess(Node* aResult);
+		void ViagemParaEsquerda(Node* Parent, int Missionarios, int Canibais);
+		void ViagemParaDireita(Node* Parent, int Missionarios, int Canibais);
+		void Viagem(Node* Parent, int Missionarios, int Canibais, int BarcoEsquerda, int BarcoDireita);		
 	public:
 		BuscaLargura();	
 		void Initialize(Estado* aEstadoInicial,  Estado* aEstadoObjetivo);
@@ -97,9 +100,55 @@ void BuscaLargura::ExpandeFronteira(){
 	this->Expandir(this->getFronteira()->RemovePrimeiro());
 }
 
+void BuscaLargura::Viagem(Node* Parent, int Missionarios, int Canibais, int BarcoEsquerda, int BarcoDireita){
+	Node* node;
+	bool result=false;
+	int missionariosLeft=Missionarios;
+	int missionariosRight=Missionarios;
+	int canibaisLeft=Canibais;
+	int canibaisRight=Canibais;
+	
+	if (BarcoEsquerda<0){
+		missionariosLeft = missionariosLeft * (-1);		
+		canibaisLeft = canibaisLeft * (-1);
+	}else{		
+		missionariosRight = missionariosRight * (-1);
+		canibaisRight = canibaisRight * (-1);
+	}	
+	
+	node = new Node(Parent->getEstado()->getMissionaryLeft() + missionariosLeft,
+				Parent->getEstado()->getCannibalLeft() + canibaisLeft,
+				Parent->getEstado()->getMissionaryRight() + missionariosRight,
+				Parent->getEstado()->getCannibalRight() + canibaisRight,
+				Parent->getEstado()->getBoatLeft() + BarcoEsquerda,
+				Parent->getEstado()->getBoatRight() + BarcoDireita);	
+				
+	result = (!(node->getEstado()->getCannibalLeft() > node->getEstado()->getMissionaryLeft()))&&(!(node->getEstado()->getCannibalRight() > node->getEstado()->getMissionaryRight()));
+	
+	if (Parent->getParentNode()!=NULL){
+		result = result && (!node->getEstado()->IsSame(Parent->getParentNode()->getEstado()));
+	}
+	
+	if (result){
+		node->setParentNode(Parent);		
+		Parent->insertChild(node);
+		this->fronteira.addNode(node);
+	}					
+}
+
+void BuscaLargura::ViagemParaEsquerda(Node* Parent, int Missionarios, int Canibais){
+	this->Viagem(Parent, Missionarios, Canibais, +1, -1);
+}
+
+void BuscaLargura::ViagemParaDireita(Node* Parent, int Missionarios, int Canibais){
+	this->Viagem(Parent, Missionarios, Canibais, -1, +1);
+}
+
 void BuscaLargura::ExpandirEsquerda(Node* aNode){
 	Node * node;
 	if(aNode->getEstado()->getMissionaryLeft()>=2){
+		this->ViagemParaDireita(aNode,2,0);
+		/*
 		node = new Node(aNode->getEstado()->getMissionaryLeft()-2,
 						aNode->getEstado()->getCannibalLeft(),
 						aNode->getEstado()->getMissionaryRight()+2,
@@ -115,9 +164,12 @@ void BuscaLargura::ExpandirEsquerda(Node* aNode){
 			aNode->insertChild(node);
 			this->fronteira.addNode(node);
 		}
+		*/ 
 	}
 	
 	if(aNode->getEstado()->getCannibalLeft()>=2){
+		this->ViagemParaDireita(aNode,0,2);
+		/*
 		node = new Node(aNode->getEstado()->getMissionaryLeft(),
 						aNode->getEstado()->getCannibalLeft()-2,
 						aNode->getEstado()->getMissionaryRight(),
@@ -133,10 +185,13 @@ void BuscaLargura::ExpandirEsquerda(Node* aNode){
 			aNode->insertChild(node);
 			this->fronteira.addNode(node);
 		}
+		*/ 
 	}		
 	
-	if(aNode->getEstado()->getMissionaryLeft()>=1){
+	if(aNode->getEstado()->getMissionaryLeft()>=1){		
 		if(aNode->getEstado()->getCannibalLeft()>=1){
+			this->ViagemParaDireita(aNode,1,1);
+			/*
 			node = new Node(aNode->getEstado()->getMissionaryLeft()-1,
 							aNode->getEstado()->getCannibalLeft()-1,
 							aNode->getEstado()->getMissionaryRight()+1,
@@ -151,8 +206,11 @@ void BuscaLargura::ExpandirEsquerda(Node* aNode){
 				aNode->insertChild(node);
 				this->fronteira.addNode(node);
 			}
+			*/ 
 		}
 		
+		this->ViagemParaDireita(aNode,1,0);
+		/*
 		node = new Node(aNode->getEstado()->getMissionaryLeft()-1,
 						aNode->getEstado()->getCannibalLeft(),
 						aNode->getEstado()->getMissionaryRight()+1,
@@ -168,9 +226,12 @@ void BuscaLargura::ExpandirEsquerda(Node* aNode){
 			aNode->insertChild(node);
 			this->fronteira.addNode(node);
 		}
+		*/ 
 	}
 	
 	if(aNode->getEstado()->getCannibalLeft()>=1){
+		this->ViagemParaDireita(aNode, 0, 1);
+		/*
 		node = new Node(aNode->getEstado()->getMissionaryLeft(),
 						aNode->getEstado()->getCannibalLeft()-1,
 						aNode->getEstado()->getMissionaryRight(),
@@ -184,13 +245,16 @@ void BuscaLargura::ExpandirEsquerda(Node* aNode){
 			node->setParentNode(aNode);		
 			aNode->insertChild(node);
 			this->fronteira.addNode(node);
-		}							
+		}
+		*/ 							
 	}		
 }
 
 void BuscaLargura::ExpandirDireita(Node* aNode){
 	Node * node;
 	if(aNode->getEstado()->getMissionaryRight()>=2){
+		this->ViagemParaEsquerda(aNode,2,0);
+		/*
 		node = new Node(aNode->getEstado()->getMissionaryLeft()+2,
 						aNode->getEstado()->getCannibalLeft(),
 						aNode->getEstado()->getMissionaryRight()-2,
@@ -206,9 +270,12 @@ void BuscaLargura::ExpandirDireita(Node* aNode){
 			aNode->insertChild(node);
 			this->fronteira.addNode(node);
 		}
+		*/ 
 	}
 	
 	if(aNode->getEstado()->getCannibalRight()>=2){
+		this->ViagemParaEsquerda(aNode,0,2);
+		/*
 		node = new Node(aNode->getEstado()->getMissionaryLeft(),
 						aNode->getEstado()->getCannibalLeft()+2,
 						aNode->getEstado()->getMissionaryRight(),
@@ -224,10 +291,13 @@ void BuscaLargura::ExpandirDireita(Node* aNode){
 			aNode->insertChild(node);
 			this->fronteira.addNode(node);
 		}
+		*/ 
 	}		
 	
 	if(aNode->getEstado()->getMissionaryRight()>=1){
 		if(aNode->getEstado()->getCannibalRight()>=1){
+			this->ViagemParaEsquerda(aNode,1,1);
+			/*
 			node = new Node(aNode->getEstado()->getMissionaryLeft()+1,
 							aNode->getEstado()->getCannibalLeft()+1,
 							aNode->getEstado()->getMissionaryRight()-1,
@@ -242,8 +312,11 @@ void BuscaLargura::ExpandirDireita(Node* aNode){
 				aNode->insertChild(node);
 				this->fronteira.addNode(node);
 			}
+			*/
 		}
 		
+		this->ViagemParaEsquerda(aNode,1,0);
+		/*
 		node = new Node(aNode->getEstado()->getMissionaryLeft()+1,
 						aNode->getEstado()->getCannibalLeft(),
 						aNode->getEstado()->getMissionaryRight()-1,
@@ -259,9 +332,12 @@ void BuscaLargura::ExpandirDireita(Node* aNode){
 			aNode->insertChild(node);
 			this->fronteira.addNode(node);
 		}
+		*/ 
 	}
 	
 	if(aNode->getEstado()->getCannibalRight()>=1){
+		this->ViagemParaEsquerda(aNode,0,1);
+		/*
 		node = new Node(aNode->getEstado()->getMissionaryLeft(),
 						aNode->getEstado()->getCannibalLeft()+1,
 						aNode->getEstado()->getMissionaryRight(),
@@ -276,5 +352,6 @@ void BuscaLargura::ExpandirDireita(Node* aNode){
 			aNode->insertChild(node);
 			this->fronteira.addNode(node);
 		}
+		*/
 	}	
 }
