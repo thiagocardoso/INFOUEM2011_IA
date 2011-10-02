@@ -1,13 +1,18 @@
+#include "viagem.cpp"
 #include "estados.cpp"
 #include "arvorebusca.cpp"
 #include "fronteira.cpp"
 #include <stdio.h>
+#include "listaSolucoes.cpp"
 using namespace std;
 
 class BuscaLargura{
 	private:
 		Node* raizArvore;
 		Fronteira fronteira;
+		ListaSolucoes listaSolucoes;
+		bool listarSolucoes;
+		int maxSolucoes;
 	protected:
 		Estado* inicial;
 		Estado* objetivo;	
@@ -21,25 +26,52 @@ class BuscaLargura{
 		void Viagem(Node* Parent, int Missionarios, int Canibais, int BarcoEsquerda, int BarcoDireita);				
 	public:
 		BuscaLargura();	
+		bool getListarSolucoes();
+		void setListarSolucoes(bool value);
 		void Initialize(Estado* aEstadoInicial,  Estado* aEstadoObjetivo);
 		virtual void Execute();
 		virtual void ExpandeFronteira();		
 		Fronteira* getFronteira();	
+		ListaSolucoes* getSolucoes();		
+		int getMaxSolucoes();
+		void setMaxSolucoes(int value);
 };
 
 BuscaLargura::BuscaLargura(){
 	this->raizArvore = NULL;
+	this->listarSolucoes = false;
+}
+
+ListaSolucoes* BuscaLargura::getSolucoes(){
+	return &this->listaSolucoes;
+}
+
+int BuscaLargura::getMaxSolucoes(){
+	return this->maxSolucoes;
+}
+
+void BuscaLargura::setMaxSolucoes(int value){
+	this->maxSolucoes=value;
+}
+
+bool BuscaLargura::getListarSolucoes(){
+	return this->listarSolucoes;
+}
+
+void BuscaLargura::setListarSolucoes(bool value){
+	this->listarSolucoes = value;
 }
 
 void BuscaLargura::Sucess(Node* aResult){
 	//cout << "ACHOU!!";
 	Node* actual = aResult;
 	
+	
 	while(actual!=NULL){
 		actual->getEstado()->printInfo();
-		
+	
 		actual = actual->getParentNode();
-	}
+	}	
 }
 
 void BuscaLargura::Execute(){
@@ -56,10 +88,23 @@ void BuscaLargura::Execute(){
 		//actual->getEstado()->printInfo();
 		
 		//getchar();
-		completed = actual->getEstado()->IsSame(this->objetivo);		
+		//completed = actual->getEstado()->IsSame(this->objetivo);		
+		if (actual->getEstado()->IsSame(this->objetivo)){
+			if (this->listarSolucoes){
+				if(!this->listaSolucoes.existeSolucao(actual)){
+					this->listaSolucoes.inserirSolucao(actual);
+				}				
+				
+				this->getFronteira()->RemoveNode(actual);
+				
+				completed = this->listaSolucoes.size()==this->getMaxSolucoes();
+			}else{
+				completed=true;
+			}
+		}		
 	}
 	
-	if (completed){
+	if ((completed)&&(!this->listarSolucoes)){
 		Sucess(actual);
 	}
 }
@@ -110,6 +155,7 @@ void BuscaLargura::ExpandeFronteira(){
 void BuscaLargura::Viagem(Node* Parent, int Missionarios, int Canibais, int BarcoEsquerda, int BarcoDireita){
 	Node* node;
 	bool result=true;
+	ViagemAbs* viagemOrigem;
 	int missionariosLeft=Missionarios;
 	int missionariosRight=Missionarios;
 	int canibaisLeft=Canibais;
@@ -118,9 +164,11 @@ void BuscaLargura::Viagem(Node* Parent, int Missionarios, int Canibais, int Barc
 	if (BarcoEsquerda<0){
 		missionariosLeft = missionariosLeft * (-1);		
 		canibaisLeft = canibaisLeft * (-1);
+		viagemOrigem = new ViagemIda(Missionarios, Canibais);
 	}else{		
 		missionariosRight = missionariosRight * (-1);
 		canibaisRight = canibaisRight * (-1);
+		viagemOrigem = new ViagemVolta(Missionarios, Canibais);
 	}	
 	
 	node = new Node(Parent->getEstado()->getMissionaryLeft() + missionariosLeft,
@@ -143,6 +191,7 @@ void BuscaLargura::Viagem(Node* Parent, int Missionarios, int Canibais, int Barc
 	}
 	
 	if (result){
+		node->getEstado()->setViagemOrigem(viagemOrigem);
 		node->setParentNode(Parent);		
 		Parent->insertChild(node);
 		this->fronteira.addNode(node);

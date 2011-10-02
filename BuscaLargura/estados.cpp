@@ -1,5 +1,6 @@
 #include <list>
 #include <string>
+//#include "viagem.cpp"
 using namespace std;
 
 class Estado{
@@ -10,6 +11,7 @@ class Estado{
 		int missionaryRight;
 		int boatLeft;
 		int boatRight;	
+		ViagemAbs* viagemOrigem;
 	public:
 		bool HasBoatLeft();
 		bool HasBoatRight();		
@@ -28,6 +30,8 @@ class Estado{
 		void setBoatLeft(int count);
 		void setBoatRight(int count);	
 		void printInfo();	
+		ViagemAbs* getViagemOrigem();
+		void setViagemOrigem(ViagemAbs* viagem);
 };
 
 class ListaEstado{
@@ -48,6 +52,14 @@ class ListaEstado{
 
 bool Estado::HasBoatLeft(){
 	return this->boatLeft>0;
+}
+
+ViagemAbs* Estado::getViagemOrigem(){
+	return this->viagemOrigem;
+}
+
+void Estado::setViagemOrigem(ViagemAbs* viagem){
+	this->viagemOrigem = viagem;
 }
 
 bool Estado::HasBoatRight(){

@@ -6,27 +6,36 @@
 #include <stdlib.h>
 using namespace std;
 
-void ExecuteBuscaLargura(){
-	Estado inicial;
-	Estado objetivo;
-	BuscaLargura bL;
+Estado* getInicial(){
+	Estado* inicial = new Estado();;
+	inicial->setMissionaryLeft(3);
+	inicial->setCannibalLeft(3);
+	inicial->setMissionaryRight(0);
+	inicial->setCannibalRight(0);
+	inicial->setBoatLeft(1);
+	inicial->setBoatRight(0);
 	
-	inicial.setMissionaryLeft(3);
-	inicial.setCannibalLeft(3);
-	inicial.setMissionaryRight(0);
-	inicial.setCannibalRight(0);
-	inicial.setBoatLeft(1);
-	inicial.setBoatRight(0);
+	return inicial;	
+}
+
+Estado* getObjetivo(){
+	Estado* objetivo = new Estado();	
+
+	objetivo->setMissionaryLeft(0);
+	objetivo->setCannibalLeft(0);
+	objetivo->setMissionaryRight(3);
+	objetivo->setCannibalRight(3);
+	objetivo->setBoatLeft(0);
+	objetivo->setBoatRight(1);
 	
-	objetivo.setMissionaryLeft(0);
-	objetivo.setCannibalLeft(0);
-	objetivo.setMissionaryRight(3);
-	objetivo.setCannibalRight(3);
-	objetivo.setBoatLeft(0);
-	objetivo.setBoatRight(1);
+	return objetivo;	
+}
+
+void ExecuteBuscaLargura(){		
+	BuscaLargura bL;	
 	
 	try{
-		bL.Initialize(&inicial, &objetivo);
+		bL.Initialize(getInicial(), getObjetivo());
 			
 		bL.Execute();	
 		
@@ -36,32 +45,51 @@ void ExecuteBuscaLargura(){
 }
 
 void ExecuteBuscaGulosa(){
-	Estado inicial;
-	Estado objetivo;
-	BuscaGulosa bG;
-	
-	inicial.setMissionaryLeft(3);
-	inicial.setCannibalLeft(3);
-	inicial.setMissionaryRight(0);
-	inicial.setCannibalRight(0);
-	inicial.setBoatLeft(1);
-	inicial.setBoatRight(0);
-	
-	objetivo.setMissionaryLeft(0);
-	objetivo.setCannibalLeft(0);
-	objetivo.setMissionaryRight(3);
-	objetivo.setCannibalRight(3);
-	objetivo.setBoatLeft(0);
-	objetivo.setBoatRight(1);
+	BuscaGulosa bG;	
 	
 	try{
-		bG.Initialize(&inicial, &objetivo);
+		bG.Initialize(getInicial(), getObjetivo());
 			
 		bG.Execute();	
 		
 	}catch(...){
 		cout << "Erro na execução da Busca Gulosa.";
 	}
+}
+
+void ExecuteAlgoritmosGeneticos(){
+	BuscaLargura bL;		
+	int i;
+	char s;
+	
+	cout << "Digite o número inicial de soluções(0 - 100): ";	
+	cin >> i;
+	cin.clear();
+	
+	if (i<=100){	
+		bL.setMaxSolucoes(i);
+		bL.setListarSolucoes(true);	
+		bL.Initialize(getInicial(), getObjetivo());
+		bL.Execute();
+		
+		cout << "Existem " << bL.getSolucoes()->size() << " soluções possíveis." <<endl;
+		cout << "Deseja imprimir as solucoes? (S/N): ";
+		
+		cin >> s;
+		cin.clear();
+		i = 0;
+		if (s=='S'){
+			bL.getSolucoes()->first();
+			while(!bL.getSolucoes()->eof()){
+				i++;
+				cout << "============================================="<<endl;
+				cout << "= #Solucao: " << i <<endl;
+				cout << "============================================="<<endl;
+				bL.getSolucoes()->printSolucao();
+				bL.getSolucoes()->next();
+			}
+		}
+	}	
 }
 
 int main(){
@@ -78,9 +106,11 @@ int main(){
 	cout << "= Escolha sua Opção:                                                       ="<<endl;
 	cout << "= 1. Busca em Largura                                                      ="<<endl;
 	cout << "= 2. Busca Gulosa                                                          ="<<endl;
+	cout << "= 3. Algoritmos Geneticos                                                  ="<<endl;
+	cout << "= 4. Sair                                                                  ="<<endl;
 	cout << "============================================================================"<<endl;
 	
-	while((c!='1')&&(c!='2')){
+	while((c!='1')&&(c!='2')&&(c!='3')&&(c!='4')){
 		cout << "Digite sua escolha e pressione ENTER:";
 		//c=getc();
 		gets(&c);
@@ -88,9 +118,28 @@ int main(){
 		cout << endl;
 	}
 	
+	switch(c){
+		case '1':{
+			ExecuteBuscaLargura();
+			break;
+		}
+		case '2':{
+			ExecuteBuscaGulosa();
+			break;
+		}
+		case '3':{
+			ExecuteAlgoritmosGeneticos();
+			break;
+		}
+		case '4':{
+			break;
+		}
+	}
+/*
 	if (c=='1'){
 		ExecuteBuscaLargura();
 	}else if(c=='2'){
 		ExecuteBuscaGulosa();
 	}
+*/ 
 }
