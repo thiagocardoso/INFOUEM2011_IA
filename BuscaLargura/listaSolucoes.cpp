@@ -27,16 +27,39 @@ ListaSolucoes::ListaSolucoes(){
 
 void ListaSolucoes::printSolucao(){
 	Node* actual = this->getSolucao();
+	std::list<Node*> list;
+	std::list<Node*>::iterator it;	
 	
+	it = list.begin();
 	
 	while(actual!=NULL){		
+		//if (actual->getEstado()->getViagemOrigem()!=NULL){
+		//	actual->getEstado()->getViagemOrigem()->printViagem();
+		//}
+		//actual->getEstado()->printInfo();
+		list.push_back(actual);
+		
+		actual = actual->getParentNode();
+	}	
+	
+	it = list.end();
+	it--;
+	while(it!=list.begin()){
+		actual = *it;
 		if (actual->getEstado()->getViagemOrigem()!=NULL){
 			actual->getEstado()->getViagemOrigem()->printViagem();
 		}
 		actual->getEstado()->printInfo();
+		it--;
 		
-		actual = actual->getParentNode();
-	}	
+		if(it==list.begin()){
+			actual = *it;
+			if (actual->getEstado()->getViagemOrigem()!=NULL){
+			actual->getEstado()->getViagemOrigem()->printViagem();
+			}
+			actual->getEstado()->printInfo();
+		}
+	}
 }
 
 int ListaSolucoes::size(){

@@ -22,11 +22,13 @@ void BuscaGulosa::Execute(){
 			this->getFronteira()->RemoveNode(actual);
 			this->Expandir(actual);			
 			//actual->getEstado()->printInfo();
+			
 		}
 	}
 	
 	if (completed){
-		Sucess(actual);
+	//	Sucess(actual);
+		this->getSolucoes()->inserirSolucao(actual);
 	}	
 }
 

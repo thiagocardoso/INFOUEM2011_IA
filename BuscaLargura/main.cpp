@@ -34,11 +34,17 @@ Estado* getObjetivo(){
 void ExecuteBuscaLargura(){		
 	BuscaLargura bL;	
 	
-	try{
+	try{		
+		bL.setMaxSolucoes(1);
+		bL.setListarSolucoes(true);	
 		bL.Initialize(getInicial(), getObjetivo());
-			
-		bL.Execute();	
+		bL.Execute();		
 		
+		bL.getSolucoes()->first();
+		cout << "============================================="<<endl;
+		cout << "= #Solucao: 1"<<endl;
+		cout << "============================================="<<endl;
+		bL.getSolucoes()->printSolucao();		
 	}catch(...){
 		cout << "Erro na execução da Busca em Largura.";
 	}
@@ -48,9 +54,18 @@ void ExecuteBuscaGulosa(){
 	BuscaGulosa bG;	
 	
 	try{
+		//bG.Initialize(getInicial(), getObjetivo());			
+		//bG.Execute();			
+		bG.setMaxSolucoes(1);
+		bG.setListarSolucoes(true);	
 		bG.Initialize(getInicial(), getObjetivo());
-			
-		bG.Execute();	
+		bG.Execute();		
+		
+		bG.getSolucoes()->first();
+		cout << "============================================="<<endl;
+		cout << "= #Solucao: 1"<<endl;
+		cout << "============================================="<<endl;
+		bG.getSolucoes()->printSolucao();			
 		
 	}catch(...){
 		cout << "Erro na execução da Busca Gulosa.";
