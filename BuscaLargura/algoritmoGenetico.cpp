@@ -91,18 +91,24 @@ ListaSolucoes* AlgoritmoGenetico::getPopulacao(){
 	return this->populacao;
 }
 
-void AlgoritmoGenetico::Mutacao(Node* node){	
+void AlgoritmoGenetico::Mutacao(Node* node){		
 	node = NULL;
 }
 
 Node* AlgoritmoGenetico::Reproduz(Node* parent1, Node* parent2){
+	Node* aux1 = parent1;
+	Node* aux2 = parent2;
+	Node* retorno;
+	Node* root;	
+
+	return NULL;
 }
 
 Node* AlgoritmoGenetico::Selecao(){
 	int i;
-	srand(this->populacao->size());
+	srand(time(NULL));
 	
-	i = rand() % this->populacao->size();
+	i = rand() % this->populacao->size()+1;
 	
 	return this->populacao->getSolucaoByIndex(i);
 }

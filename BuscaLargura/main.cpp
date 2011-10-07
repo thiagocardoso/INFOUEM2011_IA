@@ -100,6 +100,10 @@ void ExecuteAlgoritmosGeneticos(int CM, int Barcos){
 		aG->setPopulacao(bL.getSolucoes());
 		aG->Execute();
 		
+		cout << "============================================="<<endl;
+		cout << "= Melhor Solucao Encontrada"<<endl;
+		cout << "= No. Passos: "<< aG->getPopulacao()->numeroPassosSolucao(aG->getMelhorSolucao()) <<endl;
+		cout << "============================================="<<endl;		
 		aG->getPopulacao()->printSolucao(aG->getMelhorSolucao());
 /*
 		cout << "Existem " << bL.getSolucoes()->size() << " soluções possíveis." <<endl;
