@@ -133,7 +133,7 @@ Node* AlgoritmoGenetico::Reproduz(Node* parent1, Node* parent2){
 		retorno = parent1->Prototype();
 		aux2 = retorno;
 		aux3 = parent1->getParentNode();
-		while((!aux2->getEstado()->IsSame(aux1->getEstado()))){
+		while(!aux2->getEstado()->IsSame(root->getEstado())){
 			aux2->setParentNode(aux3->Prototype());
 			aux2->getParentNode()->insertChild(aux2);
 			aux2 = aux2->getParentNode();			
@@ -143,9 +143,6 @@ Node* AlgoritmoGenetico::Reproduz(Node* parent1, Node* parent2){
 		aux2->setParentNode(root->getParentNode());
 		root->getParentNode()->insertChild(aux2);		
 	}
-
-	this->populacao->printSolucao(retorno);
-
 	return retorno;
 }
 

@@ -55,9 +55,7 @@ void ExecuteBuscaLargura(int CM, int Barcos){
 void ExecuteBuscaGulosa(int CM, int Barcos){
 	BuscaGulosa bG;	
 	
-	try{
-		//bG.Initialize(getInicial(), getObjetivo());			
-		//bG.Execute();			
+	try{			
 		bG.setMaxSolucoes(1);
 		bG.setListarSolucoes(true);	
 		bG.Initialize(getInicial(CM,Barcos), getObjetivo(CM,Barcos));
@@ -105,26 +103,6 @@ void ExecuteAlgoritmosGeneticos(int CM, int Barcos){
 		cout << "= No. Passos: "<< aG->getPopulacao()->numeroPassosSolucao(aG->getMelhorSolucao()) <<endl;
 		cout << "============================================="<<endl;		
 		aG->getPopulacao()->printSolucao(aG->getMelhorSolucao());
-/*
-		cout << "Existem " << bL.getSolucoes()->size() << " soluções possíveis." <<endl;
-		cout << "Deseja imprimir as solucoes? (S/N): ";
-		
-		cin >> s;
-		cin.clear();
-		i = 0;
-		if (s=='S'){
-			bL.getSolucoes()->first();
-			while(!bL.getSolucoes()->eof()){
-				i++;
-				cout << "============================================="<<endl;
-				cout << "= #Solucao: " << i <<endl;
-				cout << "= No. Passos: "<< bL.getSolucoes()->numeroPassosSolucao(bL.getSolucoes()->getSolucao()) <<endl;				
-				cout << "============================================="<<endl;
-				bL.getSolucoes()->printSolucao();
-				bL.getSolucoes()->next();
-			}
-		}
-*/
 	}	
 }
 
@@ -137,7 +115,11 @@ int main(){
 	cout << "============================================================================"<<endl;
 	cout << "=              Inteligência Artificial - INFORMATICA 2011                  ="<<endl;
 	cout << "=                   BUSCA EM LARGURA E BUSCA GULOSA                        ="<<endl;
-	cout << "=                                                                          ="<<endl;  
+	cout << "=                                                                          ="<<endl; 
+	cout << "= Alunos:                                                                  ="<<endl;
+	cout << "=     Carla Braz       RA: 49055                                           ="<<endl;
+	cout << "=     Edilson Tizolin  RA: 45188                                           ="<<endl;
+	cout << "=     Thiago Cardoso   RA: 45194                                           ="<<endl;
 	cout << "============================================================================"<<endl;
 	cout << "= Escolha sua Opção:                                                       ="<<endl;
 	cout << "= 1. Busca em Largura                                                      ="<<endl;
