@@ -17,6 +17,7 @@ class Node{
 		void priorChild();
 		Node* getParentNode();
 		Node* getChild();
+		Node* Prototype();
 		void setParentNode(Node* parent);		
 		Estado* getEstado();
 };
@@ -71,4 +72,14 @@ Node* Node::getChild(){
 
 Estado* Node::getEstado(){
 	return &this->state;
+}
+
+Node* Node::Prototype(){
+	Node* node = new Node(this->getEstado()->getMissionaryLeft(), 
+						  this->getEstado()->getMissionaryRight(), 
+						  this->getEstado()->getCannibalLeft(), 
+						  this->getEstado()->getCannibalRight(), 
+						  this->getEstado()->getBoatLeft(), 
+						  this->getEstado()->getBoatRight());
+	return node;
 }

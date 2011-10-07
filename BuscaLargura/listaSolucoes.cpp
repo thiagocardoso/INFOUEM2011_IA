@@ -18,6 +18,7 @@ class ListaSolucoes{
 		int size();
 		int numeroPassosSolucao(Node* solucao);
 		Node* getSolucao();
+		Node* getSolucaoByIndex(int index);
 		void printSolucao();		
 };
 
@@ -64,6 +65,20 @@ void ListaSolucoes::printSolucao(){
 
 int ListaSolucoes::size(){
 	return this->list.size();
+}
+
+Node* ListaSolucoes::getSolucaoByIndex(int index){
+	int i=0;
+	if (index<this->size()){
+		this->first();
+		while(i<index){		
+			this->next();
+			i++;
+		}
+		return this->getSolucao();
+	}else{
+		return NULL;
+	}
 }
 
 void ListaSolucoes::inserirSolucao(Node* solucao){

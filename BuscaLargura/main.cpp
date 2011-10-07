@@ -2,47 +2,49 @@
 #include <string>
 #include "buscaLargura.cpp"
 #include "buscaGulosa.cpp"
+#include "algoritmoGenetico.cpp"
 #include <stdio.h>
 #include <stdlib.h>
 using namespace std;
 
-Estado* getInicial(){
+Estado* getInicial(int CM, int Barcos){
 	Estado* inicial = new Estado();;
-	inicial->setMissionaryLeft(3);
-	inicial->setCannibalLeft(3);
+	inicial->setMissionaryLeft(CM);
+	inicial->setCannibalLeft(CM);
 	inicial->setMissionaryRight(0);
 	inicial->setCannibalRight(0);
-	inicial->setBoatLeft(1);
+	inicial->setBoatLeft(Barcos);
 	inicial->setBoatRight(0);
 	
 	return inicial;	
 }
 
-Estado* getObjetivo(){
+Estado* getObjetivo(int CM, int Barcos){
 	Estado* objetivo = new Estado();	
 
 	objetivo->setMissionaryLeft(0);
 	objetivo->setCannibalLeft(0);
-	objetivo->setMissionaryRight(3);
-	objetivo->setCannibalRight(3);
+	objetivo->setMissionaryRight(CM);
+	objetivo->setCannibalRight(CM);
 	objetivo->setBoatLeft(0);
-	objetivo->setBoatRight(1);
+	objetivo->setBoatRight(Barcos);
 	
 	return objetivo;	
 }
 
-void ExecuteBuscaLargura(){		
+void ExecuteBuscaLargura(int CM, int Barcos){		
 	BuscaLargura bL;	
 	
 	try{		
 		bL.setMaxSolucoes(1);
 		bL.setListarSolucoes(true);	
-		bL.Initialize(getInicial(), getObjetivo());
+		bL.Initialize(getInicial(CM,Barcos), getObjetivo(CM,Barcos));
 		bL.Execute();		
 		
 		bL.getSolucoes()->first();
 		cout << "============================================="<<endl;
 		cout << "= #Solucao: 1"<<endl;
+		cout << "= No. Passos: "<< bL.getSolucoes()->numeroPassosSolucao(bL.getSolucoes()->getSolucao()) <<endl;
 		cout << "============================================="<<endl;
 		bL.getSolucoes()->printSolucao();		
 	}catch(...){
@@ -50,7 +52,7 @@ void ExecuteBuscaLargura(){
 	}
 }
 
-void ExecuteBuscaGulosa(){
+void ExecuteBuscaGulosa(int CM, int Barcos){
 	BuscaGulosa bG;	
 	
 	try{
@@ -58,12 +60,13 @@ void ExecuteBuscaGulosa(){
 		//bG.Execute();			
 		bG.setMaxSolucoes(1);
 		bG.setListarSolucoes(true);	
-		bG.Initialize(getInicial(), getObjetivo());
+		bG.Initialize(getInicial(CM,Barcos), getObjetivo(CM,Barcos));
 		bG.Execute();		
 		
 		bG.getSolucoes()->first();
 		cout << "============================================="<<endl;
 		cout << "= #Solucao: 1"<<endl;
+		cout << "= No. Passos: "<< bG.getSolucoes()->numeroPassosSolucao(bG.getSolucoes()->getSolucao()) <<endl;		
 		cout << "============================================="<<endl;
 		bG.getSolucoes()->printSolucao();			
 		
@@ -84,7 +87,7 @@ void ExecuteAlgoritmosGeneticos(){
 	if (i<=100){	
 		bL.setMaxSolucoes(i);
 		bL.setListarSolucoes(true);	
-		bL.Initialize(getInicial(), getObjetivo());
+		bL.Initialize(getInicial(3,1), getObjetivo(3,1));
 		bL.Execute();
 		
 		cout << "Existem " << bL.getSolucoes()->size() << " soluções possíveis." <<endl;
@@ -99,6 +102,7 @@ void ExecuteAlgoritmosGeneticos(){
 				i++;
 				cout << "============================================="<<endl;
 				cout << "= #Solucao: " << i <<endl;
+				cout << "= No. Passos: "<< bL.getSolucoes()->numeroPassosSolucao(bL.getSolucoes()->getSolucao()) <<endl;				
 				cout << "============================================="<<endl;
 				bL.getSolucoes()->printSolucao();
 				bL.getSolucoes()->next();
@@ -108,9 +112,9 @@ void ExecuteAlgoritmosGeneticos(){
 }
 
 int main(){
-	//ExecuteBuscaLargura();
-	//ExecuteBuscaGulosa();
 	char c;
+	int CM=3;
+	int Barcos=1;
 	
 	system("clear");
 	cout << "============================================================================"<<endl;
@@ -126,20 +130,35 @@ int main(){
 	cout << "============================================================================"<<endl;
 	
 	while((c!='1')&&(c!='2')&&(c!='3')&&(c!='4')){
-		cout << "Digite sua escolha e pressione ENTER:";
-		//c=getc();
+		cout << "Digite sua escolha e pressione ENTER:";		
 		gets(&c);
 		puts(&c);
 		cout << endl;
 	}
 	
+	if (c!='4'){
+		cout << "Digite a quantidade de Canibais e Missionarios do problema(Padrão=3):";
+		cin >> CM;
+		cin.clear();
+		if (CM<=0){
+			CM=3;
+		}
+		
+		cout << "Digite a quantidade de Barcos do problema(Padrão=1):";
+		cin >> Barcos;
+		cin.clear();
+		if (Barcos<=0){
+			Barcos=1;
+		}		
+	}
+	
 	switch(c){
 		case '1':{
-			ExecuteBuscaLargura();
+			ExecuteBuscaLargura(CM,Barcos);
 			break;
 		}
 		case '2':{
-			ExecuteBuscaGulosa();
+			ExecuteBuscaGulosa(CM,Barcos);
 			break;
 		}
 		case '3':{
@@ -150,11 +169,4 @@ int main(){
 			break;
 		}
 	}
-/*
-	if (c=='1'){
-		ExecuteBuscaLargura();
-	}else if(c=='2'){
-		ExecuteBuscaGulosa();
-	}
-*/ 
 }
