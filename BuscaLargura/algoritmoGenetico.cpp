@@ -96,12 +96,57 @@ void AlgoritmoGenetico::Mutacao(Node* node){
 }
 
 Node* AlgoritmoGenetico::Reproduz(Node* parent1, Node* parent2){
-	Node* aux1 = parent1;
-	Node* aux2 = parent2;
+	Node* aux1 = parent1->getParentNode();
+	Node* aux2 = NULL;
+	Node* aux3 = NULL;
 	Node* retorno;
 	Node* root;	
+	bool achou = false;
+	
+	while(!(achou)&&(aux1!=NULL)){
+		aux2 = parent2->getParentNode();
+		while((aux2!=NULL)&&(!(achou))){
+			achou = (aux2->getEstado()->IsSame(aux1->getEstado()));
+			if(!achou){
+				aux2 = aux2->getParentNode();
+			}
+		}
+		
+		if(!achou){
+			aux1 = aux1->getParentNode();
+		}
+	}
+	
+	if (achou){
+		root = aux2->Prototype();
+		aux2 = aux2->getParentNode();
+		retorno = root;
+		while(aux2!=NULL){			
+			retorno->setParentNode(aux2->Prototype());
+			retorno->getParentNode()->insertChild(retorno);
+			retorno = retorno->getParentNode();
+			
+			aux2 = aux2->getParentNode();			
+		}		
+				
+		//retorno = root;
+		retorno = parent1->Prototype();
+		aux2 = retorno;
+		aux3 = parent1->getParentNode();
+		while((!aux2->getEstado()->IsSame(aux1->getEstado()))){
+			aux2->setParentNode(aux3->Prototype());
+			aux2->getParentNode()->insertChild(aux2);
+			aux2 = aux2->getParentNode();			
+			
+			aux3 = aux3->getParentNode();			
+		}		
+		aux2->setParentNode(root->getParentNode());
+		root->getParentNode()->insertChild(aux2);		
+	}
 
-	return NULL;
+	this->populacao->printSolucao(retorno);
+
+	return retorno;
 }
 
 Node* AlgoritmoGenetico::Selecao(){
