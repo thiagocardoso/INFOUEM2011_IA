@@ -46,7 +46,7 @@ void ExecuteBuscaLargura(int CM, int Barcos){
 		cout << "= #Solucao: 1"<<endl;
 		cout << "= No. Passos: "<< bL.getSolucoes()->numeroPassosSolucao(bL.getSolucoes()->getSolucao()) <<endl;
 		cout << "============================================="<<endl;
-		bL.getSolucoes()->printSolucao();		
+		bL.getSolucoes()->printSolucao(NULL);		
 	}catch(...){
 		cout << "Erro na execução da Busca em Largura.";
 	}
@@ -68,28 +68,40 @@ void ExecuteBuscaGulosa(int CM, int Barcos){
 		cout << "= #Solucao: 1"<<endl;
 		cout << "= No. Passos: "<< bG.getSolucoes()->numeroPassosSolucao(bG.getSolucoes()->getSolucao()) <<endl;		
 		cout << "============================================="<<endl;
-		bG.getSolucoes()->printSolucao();			
+		bG.getSolucoes()->printSolucao(NULL);			
 		
 	}catch(...){
 		cout << "Erro na execução da Busca Gulosa.";
 	}
 }
 
-void ExecuteAlgoritmosGeneticos(){
-	BuscaLargura bL;		
-	int i;
+void ExecuteAlgoritmosGeneticos(int CM, int Barcos){
+	BuscaLargura bL;	
+	AlgoritmoGenetico* aG;	
+	int i=0;
+	int maxgeracoes=0;
 	char s;
 	
 	cout << "Digite o número inicial de soluções(0 - 100): ";	
 	cin >> i;
 	cin.clear();
 	
+	cout << "Informe o numero maximo de geracoes para o algoritmo genetico:";
+	cin >> maxgeracoes;
+	cin.clear();
+	
 	if (i<=100){	
 		bL.setMaxSolucoes(i);
 		bL.setListarSolucoes(true);	
-		bL.Initialize(getInicial(3,1), getObjetivo(3,1));
+		bL.Initialize(getInicial(CM,Barcos), getObjetivo(CM,Barcos));
 		bL.Execute();
 		
+		aG = new AlgoritmoGenetico(0, maxgeracoes);
+		aG->setPopulacao(bL.getSolucoes());
+		aG->Execute();
+		
+		aG->getPopulacao()->printSolucao(aG->getMelhorSolucao());
+/*
 		cout << "Existem " << bL.getSolucoes()->size() << " soluções possíveis." <<endl;
 		cout << "Deseja imprimir as solucoes? (S/N): ";
 		
@@ -108,6 +120,7 @@ void ExecuteAlgoritmosGeneticos(){
 				bL.getSolucoes()->next();
 			}
 		}
+*/
 	}	
 }
 
@@ -162,7 +175,7 @@ int main(){
 			break;
 		}
 		case '3':{
-			ExecuteAlgoritmosGeneticos();
+			ExecuteAlgoritmosGeneticos(CM,Barcos);
 			break;
 		}
 		case '4':{

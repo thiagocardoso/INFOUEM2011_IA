@@ -19,17 +19,23 @@ class ListaSolucoes{
 		int numeroPassosSolucao(Node* solucao);
 		Node* getSolucao();
 		Node* getSolucaoByIndex(int index);
-		void printSolucao();		
+		void printSolucao(Node* solucao);		
 };
 
 ListaSolucoes::ListaSolucoes(){
 	this->first();
 }
 
-void ListaSolucoes::printSolucao(){
-	Node* actual = this->getSolucao();
+void ListaSolucoes::printSolucao(Node* solucao){	
+	Node* actual;
 	std::list<Node*> list;
 	std::list<Node*>::iterator it;	
+	
+	if (solucao!=NULL){
+		actual = solucao;
+	}else{
+		actual = this->getSolucao();
+	}
 	
 	it = list.begin();
 	

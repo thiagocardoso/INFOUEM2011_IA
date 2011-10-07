@@ -13,6 +13,7 @@ class AlgoritmoGenetico{
 		Node* Reproduz(Node* parent1, Node* parent2);
 		Node* Selecao(); 
 		void buscaMelhorSolucao();
+		bool sofreMutacao();		
 	public:
 		AlgoritmoGenetico(int TaxaMutacao, int MaxGeracoes);
 		void Execute();
@@ -20,7 +21,7 @@ class AlgoritmoGenetico{
 		ListaSolucoes* getPopulacao();
 		int getMaxGeracoes();
 		int getTaxaMutacao();
-		bool sofreMutacao();
+		Node* getMelhorSolucao();
 };
 
 AlgoritmoGenetico::AlgoritmoGenetico(int TaxaMutacao, int MaxGeracoes){
@@ -40,6 +41,10 @@ void AlgoritmoGenetico::buscaMelhorSolucao(){
 		}
 		this->populacao->next();		
 	}
+}
+
+Node* AlgoritmoGenetico::getMelhorSolucao(){
+	return this->melhorSolucao;
 }
 
 void AlgoritmoGenetico::Execute(){
