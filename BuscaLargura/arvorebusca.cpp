@@ -19,7 +19,7 @@ class Node{
 		Node* getChild();
 		Node* Prototype();
 		void setParentNode(Node* parent);		
-		Estado* getEstado();
+		State* getEstado();
 };
 
 Node::Node(int missionaryLeft, int cannibalLeft, int missionaryRight, 
